@@ -31,7 +31,9 @@ data
 
 ```
 ###训练和使用
-运行demp.py
+这里使用的数据是随便找的旅游文本数据,可以换成其它的,文件夹格式参考上面的.
+
+运行demo.py
 ```
 import os
 import numpy as np
