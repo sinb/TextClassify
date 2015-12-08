@@ -29,8 +29,8 @@ class BagOfWords:
                         for line in f:
                             m1 = pattern1.findall(line)
                             m2 = pattern2.findall(line)
-                            if m1 or m2:
-                                continue
+#                            if m1 or m2:
+#                                continue
                             line = self.process_line(line)
                             words = jieba.cut(line.strip(), cut_all=False)
                             dict_set |= set(words)
@@ -73,6 +73,7 @@ class BagOfWords:
                                            " ".decode("utf8"), line)      
 
     def transform_data(self, dir):
+        from scipy import sparse
         print "transforming data in to bag of words vector"        
         data = []
         target = []
@@ -91,8 +92,8 @@ class BagOfWords:
                         for line in f:
                             m1 = pattern1.findall(line)
                             m2 = pattern2.findall(line)
-                            if m1 or m2:
-                                continue
+#                            if m1 or m2:
+#                                continue
                             line = self.process_line(line)
                             words = jieba.cut(line.strip(), cut_all=False)
                             for word in words:
@@ -105,7 +106,7 @@ class BagOfWords:
                     target.append(tag)
         self.num_samples = count
         print "done"                            
-        return numpy.asarray(data),numpy.asarray(target)
+        return sparse.csr_matrix(numpy.asarray(data)),numpy.asarray(target)
     
     def trainsorm_single_file(self, file):
         pattern1 = re.compile('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
@@ -115,8 +116,8 @@ class BagOfWords:
             for line in f:
                 m1 = pattern1.findall(line)
                 m2 = pattern2.findall(line)
-                if m1 or m2:
-                    continue
+#                if m1 or m2:
+#                    continue
                 line = self.process_line(line)
                 words = jieba.cut(line.strip(), cut_all=False)
                 for word in words:
