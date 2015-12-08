@@ -1,10 +1,12 @@
 ##LR文本分类器
-使用最简单的Bag of Words特征,训练逻辑斯蒂回归分类器.
+分别使用Bag of Words和TFIDF作为文本特征,训练逻辑斯蒂回归分类器.
+###依赖
+需要numpy,scipy,sklearn,jieba分词
 ###输入格式
 把要训练的文本放入data文件夹,根据训练集和测试集分别放入train和test.每个文件夹放一类文本,文件夹名即为类名.
 
 格式如下.
-```
+```python
 data
 ├── test
 │   ├── A_宾馆饭店
@@ -32,9 +34,9 @@ data
 ```
 ###训练和使用
 这里使用的数据是随便找的旅游文本数据,可以换成其它的,文件夹格式参考上面的.
-
-运行demo.py
-```
+####Bag of Words
+Bag of Words训练使用demo_bow.py
+```python
 import os
 import numpy as np
 from sklearn import linear_model
@@ -80,3 +82,5 @@ done
 accuracy is 0.912500
 D_购物美食
 ```
+####TFIDF
+TFIDF练使用demo_tfidf.py
