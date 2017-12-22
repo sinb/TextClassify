@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created on Tue Dec  8 15:26:59 2015
 
@@ -36,5 +35,5 @@ test_predict = logreg.predict(test_feature)
 ## ACCURACY
 true_false = (test_predict==test_target)
 accuracy = np.count_nonzero(true_false)/float(len(test_target))
-print "accuracy is %f" % accuracy
+print("accuracy is %f" % accuracy)
 

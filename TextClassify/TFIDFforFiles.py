@@ -31,7 +31,7 @@ class TFIDFforFiles:
         """
         word_docid_tf = []
         for name in self.filenames:
-            with open(join(name), 'r') as f:
+            with open(join(name), 'r', encoding='utf-8') as f:
                 tf_dict = dict()
                 for line in f:
                     line = self.process_line(line)
@@ -64,16 +64,15 @@ class TFIDFforFiles:
         
     def process_line(self, line):
         try:
-            line = line.decode("utf8")
-            line = re.sub("]-·[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+".decode("utf8"),
-                      " ".decode("utf8"),line)
+            line = re.sub("]-·[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%……&*（）]+",
+                      " ", line)
             return line
         except UnicodeDecodeError:            
             return line
             
     def printFileNames(self):
         for name in self.filenames:
-            print join(self.dirname, name)
+            print(join(self.dirname, name))
             
     def reduce_tfidf(self, term_freq, doc_freq):
         remove_list = []        
@@ -92,7 +91,7 @@ class TFIDFforFiles:
         return term_freq, doc_freq
         
     def tfidf_feature(self, dir, term_freq, doc_freq, N):
-        print "converting..."
+        print("converting...")
         import numpy as np 
         import os
         from scipy import sparse
@@ -110,13 +109,14 @@ class TFIDFforFiles:
             words_in_this_file = set()
             tags = re.split('[/\\\\]', name)
             tag = tags[-2]            
-            with open(name, 'rb') as f:
+            with open(name, 'r', encoding='utf-8') as f:
                 for line in f:
                     line = self.process_line(line)
                     words = jieba.cut(line.strip(), cut_all=False)
                     #words = line.rstrip().split(separator)
                     for word in words:
                         words_in_this_file.add(word)
+
             for word in words_in_this_file:       
                 try:
                     idf = np.log(float(N) / doc_freq[word])
@@ -128,6 +128,6 @@ class TFIDFforFiles:
             #features.append(sparse.csr_matrix(feature))
             features.append(feature)
             target.append(tag)
-        print "done"
+        print("done")
         #return sparse.csr_matrix(features),np.asarray(target)
         return sparse.csr_matrix(np.asarray(features)), np.asarray(target)

@@ -1,8 +1,9 @@
-##LR文本分类器
+## LR文本分类器
+
 分别使用Bag of Words和TFIDF作为文本特征,训练逻辑斯蒂回归分类器.
-###依赖
+### 依赖
 需要numpy,scipy,sklearn,jieba分词
-###输入格式
+### 输入格式
 把要训练的文本放入data文件夹,根据训练集和测试集分别放入train和test.每个文件夹放一类文本,文件夹名即为类名.
 
 格式如下.
@@ -32,9 +33,9 @@ data
         └── 金牌、银牌表示推荐的娱乐场所。如果想了解娱乐场所的详细信息，请点击娱乐场所名称。.txt
 
 ```
-###训练和使用
+### 训练和使用
 这里使用的数据是随便找的旅游文本数据,可以换成其它的,文件夹格式参考上面的.
-####Bag of Words
+#### Bag of Words
 Bag of Words训练使用demo_bow.py
 ```python
 import os
@@ -45,7 +46,7 @@ from TextClassify import BagOfWords,TextClassify
 data_dir = 'data'
 ## BAG OF WORDS MODEL,根据数据建立词袋模型
 BOW = BagOfWords(os.path.join(data_dir, 'train'))
-##模型可以保存,以后直接读取
+## 模型可以保存,以后直接读取
 #BOW.build_dictionary()
 #BOW.save_dictionary(os.path.join(data_dir, 'dicitionary.pkl'))
 BOW.load_dictionary(os.path.join(data_dir, 'dicitionary.pkl'))
@@ -71,7 +72,7 @@ TextClassifier = TextClassify()
 pred = TextClassifier.text_classify('test.txt', BOW, logreg)
 print pred[0]
 ```
-###运行结果
+### 运行结果
 ```
 loaded dictionary from data/dicitionary.pkl
 done
@@ -82,5 +83,5 @@ done
 accuracy is 0.912500
 D_购物美食
 ```
-####TFIDF
+#### TFIDF
 TFIDF练使用demo_tfidf.py

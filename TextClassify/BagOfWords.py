@@ -24,7 +24,7 @@ class BagOfWords:
             for file in files:
                 if file.endswith('.txt'):
                     filename = os.path.join(dirname, file)
-                    with open(filename, 'rb') as f:
+                    with open(filename, 'r', encoding='utf-8') as f:
                         count += 1
                         for line in f:
                             m1 = pattern1.findall(line)
@@ -38,18 +38,24 @@ class BagOfWords:
         self.dict = self.reduce_dict(dict_set)
         
     def load_dictionary(self, dir):
-        import cPickle as Pickle  
         try:
-            print "loaded dictionary from %s" % dir
+            import cPickle as Pickle
+        except:
+            import pickle as Pickle
+        try:
+            print("loaded dictionary from %s" % dir)
             self.dict = Pickle.load(open(dir, 'rb'))
-            print "done"            
+            print("done")
         except IOError:
-            print "error while loading from %s" % dir
+            print("error while loading from %s" % dir)
             
     def save_dictionary(self, dir):
-        import cPickle as Pickle
+        try:
+            import cPickle as Pickle
+        except:
+            import pickle as Pickle
         Pickle.dump(self.dict, open(dir, 'wb'))
-        print "saved dictionary to %s" % dir
+        print("saved dictionary to %s" % dir)
                 
     def reduce_dict(self, dict_set):
         dict_copy = dict_set.copy()
@@ -68,13 +74,12 @@ class BagOfWords:
         return dictionary
 
     def process_line(self, line):
-        line = line.decode("utf8")
-        return re.sub("]-·[\s+\.\!\/_,$%^*(+\"\':]+|[+——！，。？、~@#￥%……&*（）():\"=《]+".decode("utf8"),
-                                           " ".decode("utf8"), line)      
+        return re.sub("]-·[\s+\.\!\/_,$%^*(+\"\':]+|[+——！，。？、~@#￥%……&*（）():\"=《]+",
+                                           " ", line)
 
     def transform_data(self, dir):
         from scipy import sparse
-        print "transforming data in to bag of words vector"        
+        print("transforming data in to bag of words vector")
         data = []
         target = []
         pattern1 = re.compile('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
@@ -88,7 +93,7 @@ class BagOfWords:
                     tags = re.split('[/\\\\]', dirname)
                     tag = tags[-1]
                     word_vector = numpy.zeros(len(self.dict))
-                    with open(filename, 'rb') as f:
+                    with open(filename, 'r', encoding='utf-8') as f:
                         for line in f:
                             m1 = pattern1.findall(line)
                             m2 = pattern2.findall(line)
@@ -105,14 +110,14 @@ class BagOfWords:
                     data.append(word_vector)
                     target.append(tag)
         self.num_samples = count
-        print "done"                            
+        print("done")
         return sparse.csr_matrix(numpy.asarray(data)),numpy.asarray(target)
     
     def trainsorm_single_file(self, file):
         pattern1 = re.compile('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
         pattern2 = re.compile('保存时间:.*')   
         word_vector = numpy.zeros(len(self.dict))
-        with open(file, 'rb') as f:
+        with open(file, 'r', encoding='utf-8') as f:
             for line in f:
                 m1 = pattern1.findall(line)
                 m2 = pattern2.findall(line)
