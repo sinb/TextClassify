@@ -38,39 +38,49 @@ data
 #### Bag of Words
 Bag of Words训练使用demo_bow.py
 ```python
+"""
+Created on Mon Dec  7 20:36:00 2015
+
+@author: hehe
+"""
 import os
 import numpy as np
 from sklearn import linear_model
-from TextClassify import BagOfWords,TextClassify
-#数据目录
-data_dir = 'data'
-## BAG OF WORDS MODEL,根据数据建立词袋模型
-BOW = BagOfWords(os.path.join(data_dir, 'train'))
-## 模型可以保存,以后直接读取
-#BOW.build_dictionary()
-#BOW.save_dictionary(os.path.join(data_dir, 'dicitionary.pkl'))
-BOW.load_dictionary(os.path.join(data_dir, 'dicitionary.pkl'))
 
-## LOAD DATA,将训练数据和测试数据转为词袋特征
+from TextClassify import BagOfWords
+from TextClassify import TextClassify
+
+data_dir = 'data'
+## BAG OF WORDS MODEL
+BOW = BagOfWords(os.path.join(data_dir, 'train'))
+
+# 创建词典并且保存，如果保存过词典，以后直接load就行
+BOW.build_dictionary()
+BOW.save_dictionary(os.path.join(data_dir, 'dicitionary.pkl'))
+
+# BOW.load_dictionary('dicitionary.pkl')
+
+## LOAD DATA
 train_feature, train_target = BOW.transform_data(os.path.join(data_dir, 'train'))
 test_feature, test_target = BOW.transform_data(os.path.join(data_dir, 'test'))
 
-## TRAIN LR MODEL,训练逻辑斯蒂模型
+## TRAIN LR MODEL
 logreg = linear_model.LogisticRegression(C=1e5)
 logreg.fit(train_feature, train_target)
 
-## PREDICT,在测试集上进行预测
+## PREDICT
 test_predict = logreg.predict(test_feature)
 
-## ACCURACY,测试集上正确率91%
-true_false = (test_predict==test_target)
-accuracy = np.count_nonzero(true_false)/float(len(test_target))
-print "accuracy is %f" % accuracy
+## ACCURACY
 
-## TextClassify,对新文本进行预测,测试文件是test.txt
+true_false = (test_predict == test_target)
+accuracy = np.count_nonzero(true_false) / float(len(test_target))
+print("accuracy is %f" % accuracy)
+
+## TextClassify
 TextClassifier = TextClassify()
 pred = TextClassifier.text_classify('test.txt', BOW, logreg)
-print pred[0]
+print(pred[0])
 ```
 ### 运行结果
 ```
