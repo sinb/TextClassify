@@ -94,4 +94,4 @@ accuracy is 0.912500
 D_购物美食
 ```
 #### TFIDF
-TFIDF练使用demo_tfidf.py
+TFIDF训练使用demo_tfidf.py
