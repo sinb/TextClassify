@@ -2,6 +2,10 @@
 
 分别使用Bag of Words和TFIDF作为文本特征,训练逻辑斯蒂回归分类器.
 ### 依赖
+#### 需要python 3
+
+不支持python2,
+
 需要numpy,scipy,sklearn,jieba分词
 ### 输入格式
 把要训练的文本放入data文件夹,根据训练集和测试集分别放入train和test.每个文件夹放一类文本,文件夹名即为类名.
